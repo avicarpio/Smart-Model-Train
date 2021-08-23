@@ -24,37 +24,23 @@ p1=GPIO.PWM(m1_en,50)
 p1.start(0)
 p1.ChangeDutyCycle(0)
 
-
+last_value = 0
 
 while(1):
     
-    if velocitat == 0:
-        GPIO.output(m1_in1,GPIO.LOW)
-        GPIO.output(m1_in2,GPIO.LOW)
-        GPIO.output(m2_in1,GPIO.LOW)
-        GPIO.output(m2_in2,GPIO.LOW)
-        print("STOP!!")
-    else:
-    
-        if math.sin(math.radians(angle)) > 0 :
-            #Forward
-            GPIO.output(m1_in1,GPIO.HIGH)
-            GPIO.output(m1_in2,GPIO.LOW)
-            GPIO.output(m2_in1,GPIO.HIGH)
-            GPIO.output(m2_in2,GPIO.LOW)
-        else:
-            #Backward
+    file = open("sliderValue.txt", "r")
+    sliderValue = int(file.readline())
+    file.close()
+    if last_value != sliderValue:
+        if sliderValue < 0:
             GPIO.output(m1_in1,GPIO.LOW)
             GPIO.output(m1_in2,GPIO.HIGH)
-            GPIO.output(m2_in1,GPIO.LOW)
-            GPIO.output(m2_in2,GPIO.HIGH)
-        if math.cos(math.radians(angle)) > 0:
-            print("Posit: " + str(angle) + " | " + str(velocitat * (1 - math.cos(math.radians(angle)))) + " COS: " + str(math.cos(math.radians(angle))))
-            p1.ChangeDutyCycle(velocitat * (1 - math.cos(math.radians(angle))))
-            p2.ChangeDutyCycle(velocitat)
         else:
-            print("Negat: " + str(angle) + " | " + str(velocitat * (1 - abs(math.cos(math.radians(angle))))) + " COS: " + str(math.cos(math.radians(angle))))
-            p2.ChangeDutyCycle(velocitat * (1 - abs(math.cos(math.radians(angle)))))
-            p1.ChangeDutyCycle(velocitat)
-    
-    
+            GPIO.output(m1_in1,GPIO.HIGH)
+            GPIO.output(m1_in2,GPIO.LOW)
+
+        p1.ChangeDutyCycle(math.abs(sliderValue))
+
+        last_value = sliderValue
+
+    sleep(0.1)
