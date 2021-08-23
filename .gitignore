@@ -2,3 +2,5 @@
 /Web/node_modules
 package-lock.json
 package.json
+/Web/package-lock.json
+/Web/package.json
