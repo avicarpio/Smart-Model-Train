@@ -28,7 +28,7 @@ last_value = 0
 
 while(1):
     
-    file = open("sliderValue.txt", "r")
+    file = open("/var/www/html/sliderValue.txt", "r")
     sliderValue = int(file.readline())
     file.close()
     if last_value != sliderValue:
@@ -43,4 +43,4 @@ while(1):
 
         last_value = sliderValue
 
-    sleep(0.1)
+    sleep(0.05)
